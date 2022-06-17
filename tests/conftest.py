@@ -328,6 +328,23 @@ def rand_selected_dut(duthosts, rand_one_dut_hostname):
     """
     return duthosts[rand_one_dut_hostname]
 
+@pytest.fixture(scope="module")
+def rand_two_dut_hostname(request):
+    """
+    """
+    dut_hostnames = generate_params_dut_hostname(request)
+    if len(dut_hostnames) > 1:
+        dut_hostnames = random.sample(dut_hostnames, 2)
+    logger.info("Randomly select dut {} for testing".format(dut_hostnames[0]))
+    return dut_hostnames[0], dut_hostnames[1]
+
+@pytest.fixture(scope="module")
+def rand_select_two_dut(duthosts, rand_two_dut_hostname):
+    """
+    Return the randomly selected duthost
+    """
+    dut1, dut2 = rand_two_dut_hostname
+    return duthosts[dut1], duthosts[dut2]
 
 @pytest.fixture(scope="module")
 def rand_unselected_dut(request, duthosts, rand_one_dut_hostname):
